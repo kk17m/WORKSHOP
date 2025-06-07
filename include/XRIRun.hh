@@ -23,45 +23,39 @@
 // * acceptance of all terms of the Geant4 Software license.          *
 // ********************************************************************
 //
+/// \file XRIRun.hh
+/// \brief Definition of the XRIRun class
 //
-/// \file XRIRunAction.hh
-/// \brief Definition of the XRIRunAction class
+//
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-#ifndef XRIRunAction_h
-#define XRIRunAction_h 1
+#ifndef XRIRun_h
+#define XRIRun_h 1
 
-#include "G4UserRunAction.hh"
-#include "G4Accumulable.hh"
+#include "G4Run.hh"
+#include "G4VProcess.hh"
 #include "globals.hh"
+#include <map>
 
-class G4Run;
-class XRIHistogramManager;
-class XRIRun;
+class G4ParticleDefinition;
 
-/// Run action class
-///
-/// In EndOfRunAction(), it calculates the dose in the selected volume 
-/// from the energy deposit accumulated via stepping and event actions.
-/// The computed dose is then printed on the screen.
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-class XRIRunAction : public G4UserRunAction
+class XRIRun : public G4Run
 {
-  public:
-    XRIRunAction();
-    virtual ~XRIRunAction();
+public:
+    XRIRun();
+    ~XRIRun();
 
-    virtual G4Run* GenerateRun();
-    virtual void BeginOfRunAction(const G4Run*);
-    virtual void   EndOfRunAction(const G4Run*);
+public:
+    virtual void RecordEvent(const G4Event *);
+    virtual void Merge(const G4Run*);
 
-    void AddEdep (G4double edep); 
-
-  private:
-    G4Accumulable<G4double> fEdep;
-    G4Accumulable<G4double> fEdep2;
-    XRIHistogramManager* fHistoManager;
-    XRIRun* fRun;
+private:
 };
+
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 #endif
 

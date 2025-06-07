@@ -23,45 +23,45 @@
 // * acceptance of all terms of the Geant4 Software license.          *
 // ********************************************************************
 //
+/// \file XRIRun.cc
+/// \brief Implementation of the XRIRun class
 //
-/// \file XRIRunAction.hh
-/// \brief Definition of the XRIRunAction class
+// 
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-#ifndef XRIRunAction_h
-#define XRIRunAction_h 1
+#include "XRIRun.hh"
+#include "G4RunManager.hh"
 
-#include "G4UserRunAction.hh"
-#include "G4Accumulable.hh"
-#include "globals.hh"
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-class G4Run;
-class XRIHistogramManager;
-class XRIRun;
-
-/// Run action class
-///
-/// In EndOfRunAction(), it calculates the dose in the selected volume 
-/// from the energy deposit accumulated via stepping and event actions.
-/// The computed dose is then printed on the screen.
-
-class XRIRunAction : public G4UserRunAction
+XRIRun::XRIRun()
+: G4Run()
 {
-  public:
-    XRIRunAction();
-    virtual ~XRIRunAction();
+}
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-    virtual G4Run* GenerateRun();
-    virtual void BeginOfRunAction(const G4Run*);
-    virtual void   EndOfRunAction(const G4Run*);
+XRIRun::~XRIRun()
+{ }
 
-    void AddEdep (G4double edep); 
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-  private:
-    G4Accumulable<G4double> fEdep;
-    G4Accumulable<G4double> fEdep2;
-    XRIHistogramManager* fHistoManager;
-    XRIRun* fRun;
-};
+#include "G4Event.hh"
 
-#endif
+void XRIRun::RecordEvent(const G4Event *event)
+{
+    numberOfEvent++;
+
+    //Forward call to base class
+    G4Run::RecordEvent(event);
+}
+
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
+void XRIRun::Merge(const G4Run* run)
+{
+  G4Run::Merge(run); 
+} 
+
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 

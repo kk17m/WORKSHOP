@@ -50,7 +50,7 @@
 /gps/ang/rot1 1 0 0
 /gps/ang/rot2 0 1 0
 /gps/ang/mintheta 0 deg
-/gps/ang/maxtheta 2 deg
+/gps/ang/maxtheta 6 deg
 /gps/ang/minphi 0 deg
 /gps/ang/maxphi 360 deg
 #/gps/direction 0 0 -1
@@ -58,4 +58,4 @@
 ##########################################
 
 /run/printProgress 1000000
-#/run/beamOn 10000
+/run/beamOn 1000000

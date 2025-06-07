@@ -30,6 +30,7 @@
 #include "XRISteppingAction.hh"
 #include "XRIEventAction.hh"
 #include "XRIDetectorConstruction.hh"
+#include "XRIHistogramManager.hh"
 
 #include "G4Step.hh"
 #include "G4Event.hh"
@@ -39,9 +40,9 @@
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 XRISteppingAction::XRISteppingAction(XRIEventAction* eventAction)
-: G4UserSteppingAction(),
-  fEventAction(eventAction),
-  fScoringVolume(0)
+    : G4UserSteppingAction(),
+      fEventAction(eventAction),
+      fScoringVolume(0)
 {}
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -53,24 +54,56 @@ XRISteppingAction::~XRISteppingAction()
 
 void XRISteppingAction::UserSteppingAction(const G4Step* step)
 {
-  if (!fScoringVolume) { 
-    const XRIDetectorConstruction* detectorConstruction
-      = static_cast<const XRIDetectorConstruction*>
-        (G4RunManager::GetRunManager()->GetUserDetectorConstruction());
-    fScoringVolume = detectorConstruction->GetScoringVolume();   
-  }
+    // Check next volume, if nullptr (or out of world then return)
+    const G4VPhysicalVolume* nextVol = step->GetTrack()->GetNextVolume();
+    if(nextVol == nullptr)
+        return;
 
-  // get volume of the current step
-  G4LogicalVolume* volume 
-    = step->GetPreStepPoint()->GetTouchableHandle()
-      ->GetVolume()->GetLogicalVolume();
-      
-  // check if we are in scoring volume
-  if (volume != fScoringVolume) return;
+    // get particle name
+    const G4String particle = step->GetTrack()->GetParticleDefinition()->GetParticleName();
 
-  // collect energy deposited in this step
-  G4double edepStep = step->GetTotalEnergyDeposit();
-  fEventAction->AddEdep(edepStep);  
+    // get volume name for the pre-step point
+    const G4String preStepVol = step->GetPreStepPoint()->GetTouchableHandle()->GetVolume()->GetLogicalVolume()->GetName();
+
+    // get volume name for the post-step point
+    const G4String postStepVol = step->GetPostStepPoint()->GetTouchableHandle()->GetVolume()->GetLogicalVolume()->GetName();
+
+    // get volume of the current step
+    G4LogicalVolume* volume = step->GetPreStepPoint()->GetTouchableHandle()->GetVolume()->GetLogicalVolume();
+
+    // find local position coordinates using GetPtrTopTransform()
+    const G4AffineTransform* transformation = step->GetTrack()->GetTouchable()->GetHistory()->GetPtrTopTransform();
+    const G4ThreeVector localVetex = transformation->TransformPoint(step->GetTrack()->GetPosition());
+    const G4double x = localVetex.x();
+    const G4double y = localVetex.y();
+    const G4double z = localVetex.z();
+
+    //
+    // dose scoring volume
+    //
+    if (!fScoringVolume) {
+        const XRIDetectorConstruction* detectorConstruction = static_cast<const XRIDetectorConstruction*>
+                (G4RunManager::GetRunManager()->GetUserDetectorConstruction());
+
+        fScoringVolume = detectorConstruction->GetScoringVolume();
+    }
+
+    // check if we are in scoring volume
+    if (volume == fScoringVolume) {
+
+        // collect energy deposited in this step
+        G4double edepStep = step->GetTotalEnergyDeposit();
+        fEventAction->AddEdep(edepStep);
+    }
+
+    //
+    // transmission detector
+    //
+    if ((preStepVol == "transmissionDet" && postStepVol == "World") && particle == "gamma")
+    {
+        G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
+        analysisManager->FillH2(1, x, y);
+    }
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
