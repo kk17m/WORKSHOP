@@ -46,7 +46,6 @@ set(XRIMAGING_SCRIPTS
   XRImaging.in
   XRImaging.out
   init_vis.mac
-  run.mac
   vis.mac
   )
 

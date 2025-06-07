@@ -29,6 +29,7 @@
 
 #include "XRIDetectorConstruction.hh"
 #include "XRIActionInitialization.hh"
+#include "XRIPhysicsList.hh"
 
 #ifdef G4MULTITHREADED
 #include "G4MTRunManager.hh"
@@ -37,7 +38,7 @@
 #endif
 
 #include "G4UImanager.hh"
-#include "QBBC.hh"
+#include "G4EmPenelopePhysics.hh"
 
 #include "G4VisExecutive.hh"
 #include "G4UIExecutive.hh"
@@ -72,7 +73,7 @@ int main(int argc,char** argv)
   runManager->SetUserInitialization(new XRIDetectorConstruction());
 
   // Physics list
-  G4VModularPhysicsList* physicsList = new QBBC;
+  G4VModularPhysicsList* physicsList = new XRIPhysicsList();
   physicsList->SetVerboseLevel(1);
   runManager->SetUserInitialization(physicsList);
     
@@ -89,6 +90,7 @@ int main(int argc,char** argv)
   // Get the pointer to the User Interface manager
   G4UImanager* UImanager = G4UImanager::GetUIpointer();
 
+  G4String macroFile = "XRImaging.in";
   // Process macro or start UI session
   //
   if ( ! ui ) { 
@@ -100,6 +102,7 @@ int main(int argc,char** argv)
   else { 
     // interactive mode
     UImanager->ApplyCommand("/control/execute init_vis.mac");
+    UImanager->ApplyCommand("/control/execute " + macroFile);
     ui->SessionStart();
     delete ui;
   }

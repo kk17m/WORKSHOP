@@ -23,41 +23,39 @@
 // * acceptance of all terms of the Geant4 Software license.          *
 // ********************************************************************
 //
+/// \brief Definition of the XRIPhysicsList class
 //
-/// \file XRIPrimaryGeneratorAction.hh
-/// \brief Definition of the XRIPrimaryGeneratorAction class
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-#ifndef XRIPrimaryGeneratorAction_h
-#define XRIPrimaryGeneratorAction_h 1
+#ifndef XRIPhysicsList_h
+#define XRIPhysicsList_h 1
 
-#include "G4VUserPrimaryGeneratorAction.hh"
-#include "G4GeneralParticleSource.hh"
+#include "G4VModularPhysicsList.hh"
 #include "globals.hh"
 
-class G4GeneralParticleSource;
-class G4Event;
-class G4Box;
+class G4VPhysicsConstructor;
 
-/// The primary generator action class with particle gun.
-///
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-class XRIPrimaryGeneratorAction : public G4VUserPrimaryGeneratorAction
+class XRIPhysicsList: public G4VModularPhysicsList
 {
-  public:
-    XRIPrimaryGeneratorAction();    
-    virtual ~XRIPrimaryGeneratorAction();
+public:
+  XRIPhysicsList();
+ ~XRIPhysicsList();
 
-    // method from the base class
-    virtual void GeneratePrimaries(G4Event*);
+  virtual void ConstructParticle();
 
-    // method to access particle gun
-    const G4GeneralParticleSource* GetParticleGun() const { return fGeneralParticleSource; }
-  
-  private:
-    G4GeneralParticleSource* fGeneralParticleSource; // pointer to G4 general particle source class
-    G4Box* fEnvelopeBox;
+  void AddPhysicsList(const G4String& name);
+
+  virtual void ConstructProcess();
+
+private:
+
+  G4VPhysicsConstructor*  fEmPhysicsList;
 };
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 #endif
+

@@ -95,17 +95,18 @@
 /vis/set/lineWidth     # Revert to default line width (1.)
 
 # Attach text to one edge of Shape1, with a small, fixed offset
-/vis/scene/add/text 0 7 5 cm 18 4 4 Imaging Object
+/vis/scene/add/text 0 7 -6 cm 18 4 4 Imaging Object
 # Attach text to one corner of Shape2, with a small, fixed offset
-/vis/scene/add/text 0 10 20 cm 18 4 4 Transmission Detector
+/vis/scene/add/text 0 10 -30 cm 18 4 4 Transmission Detector
 
 # To get nice view
 # Make the "World" box invisible
-/vis/geometry/set/visibility World 0 false
+#/vis/geometry/set/visibility World 0 false
 /vis/viewer/set/style surface
 /vis/viewer/set/hiddenMarker true
 /vis/viewer/set/viewpointThetaPhi 120 150
 /vis/viewer/set/viewpointThetaPhi 90 90 deg
+/vis/viewer/zoom 2
 
 # Re-establish auto refreshing and verbosity:
 /vis/viewer/set/autoRefresh true

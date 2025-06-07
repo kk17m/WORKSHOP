@@ -36,6 +36,7 @@
 #include "G4LogicalVolume.hh"
 #include "G4PVPlacement.hh"
 #include "G4SystemOfUnits.hh"
+#include "G4VisAttributes.hh"
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
@@ -63,8 +64,8 @@ G4VPhysicalVolume* XRIDetectorConstruction::Construct()
     //
     // World
     //
-    G4double world_sizeXY = 0.5*m;
-    G4double world_sizeZ  = 0.5*m;
+    G4double world_sizeXY = 1.*m;
+    G4double world_sizeZ  = 1.*m;
     G4Material* world_mat = nist->FindOrBuildMaterial("G4_AIR");
 
     G4Box* solidWorld = new G4Box("World",               // its name
@@ -85,11 +86,16 @@ G4VPhysicalVolume* XRIDetectorConstruction::Construct()
                                                      0,                     // copy number
                                                      checkOverlaps);        // overlaps checking
 
+    G4VisAttributes* workd_Attributes  = new G4VisAttributes();
+    workd_Attributes->SetForceSolid(false);
+    workd_Attributes->SetColour(1., 1., 1., 0.05);
+    logicWorld->SetVisAttributes(workd_Attributes);
+
     //
     // Imaging Object
     //
     G4Material* imagingObj_mat = nist->FindOrBuildMaterial("G4_TISSUE_SOFT_ICRP");
-    G4ThreeVector ImagingObj_pos = G4ThreeVector(0., 0., 7*cm);
+    G4ThreeVector ImagingObj_pos = G4ThreeVector(0., 0., -70.*mm);
     G4RotationMatrix *ImagingObj_rot = new G4RotationMatrix(0., 0., 0.);
     ImagingObj_rot->rotateX(90.*deg);   // Rotate object by 90 deg about the X-axis
 
@@ -119,6 +125,11 @@ G4VPhysicalVolume* XRIDetectorConstruction::Construct()
                       false,                   // no boolean operation
                       0,                       // copy number
                       checkOverlaps);          // overlaps checking
+
+    G4VisAttributes* ImagingObj_Attributes  = new G4VisAttributes();
+    ImagingObj_Attributes->SetForceSolid(true);
+    ImagingObj_Attributes->SetColour(1., 0.9, 0.9, 0.5);
+    ImagingObj_logic->SetVisAttributes(ImagingObj_Attributes);
 
     // Set imaging object as scoring volume for dose calculation
     //

@@ -23,52 +23,82 @@
 // * acceptance of all terms of the Geant4 Software license.          *
 // ********************************************************************
 //
+/// \brief Implementation of the XRIPhysicsList class
 //
-/// \file XRIPrimaryGeneratorAction.cc
-/// \brief Implementation of the XRIPrimaryGeneratorAction class
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-#include "XRIPrimaryGeneratorAction.hh"
+#include "XRIPhysicsList.hh"
 
-#include "G4LogicalVolumeStore.hh"
-#include "G4LogicalVolume.hh"
-#include "G4Box.hh"
-#include "G4RunManager.hh"
-#include "G4ParticleGun.hh"
-#include "G4ParticleTable.hh"
-#include "G4ParticleDefinition.hh"
+#include "G4EmLivermorePhysics.hh"
+#include "G4EmPenelopePhysics.hh"
+
+#include "G4LossTableManager.hh"
+#include "G4UnitsTable.hh"
 #include "G4SystemOfUnits.hh"
-#include "Randomize.hh"
+#include "G4ParticleDefinition.hh"
+#include "G4ProcessManager.hh"
+
+// particles
+
+#include "G4BosonConstructor.hh"
+#include "G4LeptonConstructor.hh"
+#include "G4MesonConstructor.hh"
+#include "G4BosonConstructor.hh"
+#include "G4BaryonConstructor.hh"
+#include "G4IonConstructor.hh"
+#include "G4ShortLivedConstructor.hh"
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-XRIPrimaryGeneratorAction::XRIPrimaryGeneratorAction()
-    : G4VUserPrimaryGeneratorAction(),
-      fGeneralParticleSource(nullptr),
-      fEnvelopeBox(nullptr)
+XRIPhysicsList::XRIPhysicsList() : G4VModularPhysicsList(),
+    fEmPhysicsList(nullptr)
 {
-    fGeneralParticleSource = new G4GeneralParticleSource();
-
-    // default particle kinematic
-    G4ParticleTable* particleTable = G4ParticleTable::GetParticleTable();
-    G4String particleName;
-    G4ParticleDefinition* particle = particleTable->FindParticle(particleName="gamma");
-    fGeneralParticleSource->SetParticleDefinition(particle);
+  SetVerboseLevel(0);
+     
+  // EM physics
+  fEmPhysicsList = new G4EmPenelopePhysics();
+  
+  G4LossTableManager::Instance();
+  SetDefaultCutValue(0.01*um);
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-XRIPrimaryGeneratorAction::~XRIPrimaryGeneratorAction()
+XRIPhysicsList::~XRIPhysicsList()
 {
-    delete fGeneralParticleSource;
+  delete fEmPhysicsList;
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-void XRIPrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
+void XRIPhysicsList::ConstructParticle()
 {
-    // this function is called at the begining of each event
-    //
-    fGeneralParticleSource->GeneratePrimaryVertex(anEvent);
+    G4BosonConstructor  pBosonConstructor;
+    pBosonConstructor.ConstructParticle();
+
+    G4LeptonConstructor pLeptonConstructor;
+    pLeptonConstructor.ConstructParticle();
+
+    G4MesonConstructor pMesonConstructor;
+    pMesonConstructor.ConstructParticle();
+
+    G4BaryonConstructor pBaryonConstructor;
+    pBaryonConstructor.ConstructParticle();
+
+    G4IonConstructor pIonConstructor;
+    pIonConstructor.ConstructParticle();
+
+    G4ShortLivedConstructor pShortLivedConstructor;
+    pShortLivedConstructor.ConstructParticle();  
+}
+
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
+void XRIPhysicsList::ConstructProcess()
+{
+  AddTransportation();
+  fEmPhysicsList->ConstructProcess();
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
