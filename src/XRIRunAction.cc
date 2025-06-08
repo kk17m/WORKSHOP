@@ -40,6 +40,7 @@
 #include "G4LogicalVolume.hh"
 #include "G4UnitsTable.hh"
 #include "G4SystemOfUnits.hh"
+#include "G4Timer.hh"
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
@@ -48,7 +49,8 @@ XRIRunAction::XRIRunAction()
       fEdep(0.),
       fEdep2(0.),
       fHistoManager(nullptr),
-      fRun(nullptr)
+      fRun(nullptr),
+      fTimer(nullptr)
 { 
     // add new units for dose
     //
@@ -85,7 +87,7 @@ G4Run* XRIRunAction::GenerateRun()
   return fRun;
 }
 
-void XRIRunAction::BeginOfRunAction(const G4Run*)
+void XRIRunAction::BeginOfRunAction(const G4Run* run)
 { 
     // inform the runManager to save random number seed
     G4RunManager::GetRunManager()->SetRandomNumberStore(false);
@@ -101,6 +103,14 @@ void XRIRunAction::BeginOfRunAction(const G4Run*)
     {
         analysisManager->OpenFile();
     }
+
+    if (IsMaster())
+        {
+            // Timer start
+            fTimer = new G4Timer();
+            fTimer->Start();
+            G4cout << "### Run " << run->GetRunID() << " starts (master)." << G4endl;
+        }
 
 }
 
@@ -156,21 +166,30 @@ void XRIRunAction::EndOfRunAction(const G4Run* run)
     }
 
     // Print
-    //
-    if (IsMaster()) {
-        G4cout
-                << G4endl
-                << "--------------------End of Global Run-----------------------";
-    }
-    else {
-        G4cout
-                << G4endl
-                << "--------------------End of Local Run------------------------";
-    }
+        //
+        if (IsMaster())
+        {
+            G4cout
+                    << G4endl
+                    << "--------------------End of Global Run-----------------------";
+
+            // Timer stop
+            fTimer->Stop();
+            if(!((G4RunManager::GetRunManager()->GetRunManagerType() == G4RunManager::sequentialRM)))
+            {
+                G4cout << "\n" << "Number of events processed in run " << run->GetRunID() << ":  " << run->GetNumberOfEventToBeProcessed() << G4endl;
+                G4cout << "Master thread time:  "  << *fTimer << "\n" << G4endl;
+            }
+            delete fTimer;
+        }
+        else
+        {
+            G4cout
+                    << G4endl
+                    << "--------------------End of Local Run------------------------";
+        }
 
     G4cout
-            << G4endl
-            << " The run consists of " << nofEvents << " "<< runCondition
             << G4endl
             << " Cumulated dose per run, in scoring volume : "
             << G4BestUnit(dose,"Dose") << " rms = " << G4BestUnit(rmsDose,"Dose")

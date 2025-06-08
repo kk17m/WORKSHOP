@@ -37,6 +37,7 @@
 class G4Run;
 class XRIHistogramManager;
 class XRIRun;
+class G4Timer;
 
 /// Run action class
 ///
@@ -51,7 +52,7 @@ class XRIRunAction : public G4UserRunAction
     virtual ~XRIRunAction();
 
     virtual G4Run* GenerateRun();
-    virtual void BeginOfRunAction(const G4Run*);
+    virtual void BeginOfRunAction(const G4Run* run);
     virtual void   EndOfRunAction(const G4Run*);
 
     void AddEdep (G4double edep); 
@@ -61,6 +62,7 @@ class XRIRunAction : public G4UserRunAction
     G4Accumulable<G4double> fEdep2;
     XRIHistogramManager* fHistoManager;
     XRIRun* fRun;
+    G4Timer* fTimer;
 };
 
 #endif

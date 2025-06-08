@@ -76,7 +76,7 @@ void XRISteppingAction::UserSteppingAction(const G4Step* step)
     const G4ThreeVector localVetex = transformation->TransformPoint(step->GetTrack()->GetPosition());
     const G4double x = localVetex.x();
     const G4double y = localVetex.y();
-    const G4double z = localVetex.z();
+    // const G4double z = localVetex.z();
 
     //
     // dose scoring volume
@@ -94,6 +94,16 @@ void XRISteppingAction::UserSteppingAction(const G4Step* step)
         // collect energy deposited in this step
         G4double edepStep = step->GetTotalEnergyDeposit();
         fEventAction->AddEdep(edepStep);
+    }
+
+    //
+    // fluorescence detector
+    //
+    if ((preStepVol == "fluorescenceDet" && postStepVol == "World") && particle == "gamma")
+    {
+        const G4double ekin = step->GetTrack()->GetKineticEnergy();
+        G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
+        analysisManager->FillH1(1, ekin);
     }
 
     //

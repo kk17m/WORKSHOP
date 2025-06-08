@@ -32,11 +32,13 @@
 #include "G4RunManager.hh"
 #include "G4NistManager.hh"
 #include "G4Box.hh"
+#include "G4Orb.hh"
 #include "G4Tubs.hh"
 #include "G4LogicalVolume.hh"
 #include "G4PVPlacement.hh"
 #include "G4SystemOfUnits.hh"
 #include "G4VisAttributes.hh"
+#include "G4Transform3D.hh"
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
@@ -107,16 +109,16 @@ G4VPhysicalVolume* XRIDetectorConstruction::Construct()
 
     // Transmission detector shape
     //
-    G4double fPx = 100.*mm / 2.;    // half length in x
-    G4double fPy = 100.*mm / 2.;    // half length in y
-    G4double fPz = 1.*mm / 2.;      // half length in z
+    G4double tPx = 100.*mm / 2.;    // half length in x
+    G4double tPy = 100.*mm / 2.;    // half length in y
+    G4double tPz = 1.*mm / 2.;      // half length in z
 
     // Solid volume
     //
     G4Box* transDet_solid = new G4Box("transmissionDet",      //its name
-                                      fPx,                // half length in x
-                                      fPy,                // half length in y
-                                      fPz);               // half length in z
+                                      tPx,                // half length in x
+                                      tPy,                // half length in y
+                                      tPz);               // half length in z
 
     // Logic volume
     //
@@ -145,7 +147,7 @@ G4VPhysicalVolume* XRIDetectorConstruction::Construct()
     //
     // Imaging Object
     //
-    G4Material* imagingObj_mat = nist->FindOrBuildMaterial("G4_TISSUE_SOFT_ICRP");
+    G4Material* ImagingObj_mat = nist->FindOrBuildMaterial("G4_TISSUE_SOFT_ICRP");
     G4ThreeVector ImagingObj_pos = G4ThreeVector(0., 0., -70.*mm);
     G4RotationMatrix *ImagingObj_rot = new G4RotationMatrix(0., 0., 0.);
     ImagingObj_rot->rotateX(90.*deg);   // Rotate object by 90 deg about the X-axis
@@ -170,7 +172,7 @@ G4VPhysicalVolume* XRIDetectorConstruction::Construct()
     // Logic volume
     //
     G4LogicalVolume* ImagingObj_logic = new G4LogicalVolume(ImagingObj_solid,        // its solid
-                                                            imagingObj_mat,          // its material
+                                                            ImagingObj_mat,          // its material
                                                             "imagingObject");        // its name
 
     // Physical volume
@@ -194,6 +196,104 @@ G4VPhysicalVolume* XRIDetectorConstruction::Construct()
     // Set imaging object as scoring volume for dose calculation
     //
     fScoringVolume = ImagingObj_logic;
+
+    //
+    // Contrast agent - Imaging Object
+    //
+    G4Material* contrast_mat  = nist->FindOrBuildMaterial("G4_Gd");
+    G4double contrast_density = contrast_mat->GetDensity();
+    G4double imagingObj_density = ImagingObj_mat->GetDensity();
+
+    G4double contrast_Fmass = 0.01;
+    G4double imagingObj_fmass = 1. - contrast_Fmass;
+    G4double density = contrast_Fmass * contrast_density + imagingObj_fmass * imagingObj_density;
+
+    G4Material *contrast_solution = new G4Material("CONTRAST", density, 2);
+    contrast_solution->AddMaterial(ImagingObj_mat, imagingObj_fmass);
+    contrast_solution->AddMaterial(contrast_mat, contrast_Fmass);
+
+    // Position
+    G4ThreeVector contrast_pos = G4ThreeVector(0., 0., 0.*mm);
+
+    // Spherical contrast
+    //
+    G4double cRMax = 10.*mm / 2.;    // Outer radius
+
+    // Solid volume
+    //
+    G4Orb* contrast_solid = new G4Orb("CONTRAST",      // its name
+                                      cRMax);          // Outer radius
+
+    // Logic volume
+    //
+    G4LogicalVolume* contrast_logic = new G4LogicalVolume(contrast_solid,     // its solid
+                                                          contrast_solution,       // its material
+                                                          "CONTRAST");        // its name
+
+    // Physical volume
+    //
+    new G4PVPlacement(0,                     // rotation
+                      contrast_pos,          // at position
+                      contrast_logic,        // its logical volume
+                      "CONTRAST",            // its name
+                      ImagingObj_logic,      // its mother  volume
+                      false,                 // no boolean operation
+                      0,                     // copy number
+                      checkOverlaps);        // overlaps checking
+
+    // Visualization properties
+    //
+    G4VisAttributes* contrast_Attributes  = new G4VisAttributes();
+    contrast_Attributes->SetForceSolid(true);
+    contrast_Attributes->SetColour(0., 0., 1., 0.5);
+    contrast_logic->SetVisAttributes(contrast_Attributes);
+
+    //
+    // Fluorescence detector
+    //
+    G4Material* fluoDet_mat = nist->FindOrBuildMaterial("G4_AIR");
+    G4ThreeVector fluoDet_pos = G4ThreeVector(70.*mm, 0., 60.*mm);
+    G4RotationMatrix fluoDet_rot = G4RotationMatrix(0., 0., 0.);
+    fluoDet_rot.rotateY(90.*deg);   // Rotate fluorescence detector by 90 deg about the X-axis
+
+    // Transmission detector shape
+    //
+    G4double fPx = 100.*mm / 2.;    // half length in x
+    G4double fPy = 100.*mm / 2.;    // half length in y
+    G4double fPz = 1.*mm / 2.;      // half length in z
+
+    // Solid volume
+    //
+    G4Box* fluoDet_solid = new G4Box("fluorescenceDet",  // its name
+                                     fPx,                // half length in x
+                                     fPy,                // half length in y
+                                     fPz);               // half length in z
+
+    // Logic volume
+    //
+    G4LogicalVolume* fluoDet_logic = new G4LogicalVolume(fluoDet_solid,        // its solid
+                                                         fluoDet_mat,          // its material
+                                                         "fluorescenceDet");   // its name
+
+    // 3D transform operations
+    G4Transform3D fluo_transform = G4Rotate3D(fluoDet_rot)*G4Translate3D(fluoDet_pos);
+
+    // Physical volume
+    //
+    new G4PVPlacement(fluo_transform,          // 3D transform
+                      fluoDet_logic,           // its logical volume
+                      "fluorescenceDet",       // its name
+                      logicWorld,              // its mother  volume
+                      false,                   // no boolean operation
+                      0,                       // copy number
+                      checkOverlaps);          // overlaps checking
+
+    // Visualization properties
+    //
+    G4VisAttributes* fluoDet_Attributes  = new G4VisAttributes();
+    fluoDet_Attributes->SetForceSolid(true);
+    fluoDet_Attributes->SetColour(9., 0., 0., 0.5);
+    fluoDet_logic->SetVisAttributes(fluoDet_Attributes);
 
     //
     // Always return the physical World

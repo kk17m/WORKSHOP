@@ -4,10 +4,6 @@
 # or interactively: Idle> /control/execute XRImaging.in
 
 #
-# Change the default number of workers (in multi-threading mode)
-#/run/numberOfWorkers 4
-
-#
 # Initialize the simulation
 /run/initialize
 
@@ -35,7 +31,7 @@
 
 ## Mono energy
 /gps/ene/type Gauss
-/gps/ene/mono 25.0 keV
+/gps/ene/mono 65.0 keV
 /gps/ene/sigma 0.2 keV
 
 ## Poly energy
@@ -58,4 +54,4 @@
 ##########################################
 
 /run/printProgress 1000000
-/run/beamOn 1000000
+/run/beamOn 10000000
