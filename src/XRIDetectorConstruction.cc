@@ -251,7 +251,7 @@ G4VPhysicalVolume* XRIDetectorConstruction::Construct()
     //
     // Fluorescence detector
     //
-    G4Material* fluoDet_mat = nist->FindOrBuildMaterial("G4_AIR");
+    G4Material* fluoDet_mat = nist->FindOrBuildMaterial("G4_CADMIUM_TELLURIDE");
     G4ThreeVector fluoDet_pos = G4ThreeVector(70.*mm, 0., 60.*mm);
     G4RotationMatrix fluoDet_rot = G4RotationMatrix(0., 0., 0.);
     fluoDet_rot.rotateY(90.*deg);   // Rotate fluorescence detector by 90 deg about the X-axis

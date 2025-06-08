@@ -121,7 +121,9 @@ void XRIRunAction::EndOfRunAction(const G4Run* run)
     G4int nofEvents = run->GetNumberOfEvent();
     if (nofEvents == 0) return;
 
-    // Merge accumulables
+    // Merge accumulables. Accumulables objects are named variables registered to
+    // the accumulable manager, which provides the access to them by name and performs
+    // their merging in multi-threading mode (events running on different threads)!!
     G4AccumulableManager* accumulableManager = G4AccumulableManager::Instance();
     accumulableManager->Merge();
 
@@ -156,9 +158,11 @@ void XRIRunAction::EndOfRunAction(const G4Run* run)
         runCondition += G4BestUnit(particleEnergy,"Energy");
     }
 
+    // Get analysis manager instance
+    G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
+
     //save histograms
     //
-    G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
     if ( analysisManager->IsActive() )
     {
         analysisManager->Write();
@@ -209,4 +213,3 @@ void XRIRunAction::AddEdep(G4double edep)
 
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-

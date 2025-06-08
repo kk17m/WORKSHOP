@@ -67,10 +67,13 @@ void XRIHistogramManager::Book()
   analysisManager->SetHistoDirectoryName("histo");
   analysisManager->SetFirstHistoId(1);
 
-  G4int ih = analysisManager->CreateH1("h1.1", "Energy spectrum : Incident on crystal", 1000, 0.*keV, 80.*keV, "keV");
+  G4int ih = analysisManager->CreateH1("h1.1", "Ideal Fluorescence Detector: Incident energy spectrum", 1000, 0.*keV, 80.*keV, "keV");
   analysisManager->SetH1Activation(ih, true);
 
-  ih = analysisManager->CreateH2("h2.1","Plane-1 : Position distribution x vs. y", 500, -50.*mm, 50.*mm, 500, -50.*mm, 50.*mm, "mm", "mm");
+  ih = analysisManager->CreateH1("h1.2","Realistic Fluorescence Detector: Deposited energy, noise, ...", 1000, 0.*keV, 80.*keV, "keV");
+  analysisManager->SetH1Activation(ih, true);
+
+  ih = analysisManager->CreateH2("h2.1","Ideal Transmission Detector: Counts in pixels", 500, -50.*mm, 50.*mm, 500, -50.*mm, 50.*mm, "mm", "mm");
   analysisManager->SetH2Activation(ih, true);
 }
 

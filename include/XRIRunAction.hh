@@ -55,7 +55,7 @@ class XRIRunAction : public G4UserRunAction
     virtual void BeginOfRunAction(const G4Run* run);
     virtual void   EndOfRunAction(const G4Run*);
 
-    void AddEdep (G4double edep); 
+    void AddEdep (G4double edep);
 
   private:
     G4Accumulable<G4double> fEdep;
