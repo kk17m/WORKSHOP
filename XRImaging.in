@@ -37,7 +37,7 @@
 ## Poly energy
 #/gps/ene/type Arb
 #/gps/hist/type arb
-#/control/execute STAGE_TWO_110kV_Sn3mm_Mo0pt3Dia.hist
+#/control/execute Energy.hist
 #/gps/hist/inter Lin
 
 ### Angular (beam) properties ##############

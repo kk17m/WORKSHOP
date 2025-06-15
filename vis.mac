@@ -94,10 +94,10 @@
 /vis/set/colour        # Revert to default colour (white)
 /vis/set/lineWidth     # Revert to default line width (1.)
 
-# Attach text to one edge of Shape1, with a small, fixed offset
+# Attach text to one edge, with a small, fixed offset
 /vis/scene/add/text 0 7 -6 cm 18 4 4 Imaging Object
-# Attach text to one corner of Shape2, with a small, fixed offset
-/vis/scene/add/text 0 10 -30 cm 18 4 4 Transmission Detector
+/vis/scene/add/text 0 8 -30 cm 18 4 4 Transmission Detector
+/vis/scene/add/text 7 -7 -6 cm 18 4 4 Fluorescence Detector
 
 # To get nice view
 # Make the "World" box invisible
