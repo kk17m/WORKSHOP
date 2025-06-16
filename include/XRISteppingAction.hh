@@ -42,16 +42,16 @@ class G4LogicalVolume;
 
 class XRISteppingAction : public G4UserSteppingAction
 {
-  public:
+public:
     XRISteppingAction(XRIEventAction* eventAction);
     virtual ~XRISteppingAction();
 
     // method from the base class
     virtual void UserSteppingAction(const G4Step*);
 
-  private:
-    XRIEventAction*  fEventAction;
-    G4LogicalVolume* fScoringVolume;
+private:
+    //    XRIEventAction*  fEventAction;
+    //    G4LogicalVolume* fScoringVolume;
 };
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

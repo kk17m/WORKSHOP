@@ -43,8 +43,8 @@
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 XRIDetectorConstruction::XRIDetectorConstruction()
-    : G4VUserDetectorConstruction(),
-      fScoringVolume(0)
+    : G4VUserDetectorConstruction()
+    //      fScoringVolume(0)
 { }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -104,196 +104,196 @@ G4VPhysicalVolume* XRIDetectorConstruction::Construct()
     //
     // Transmission detector
     //
-    G4Material* transDet_mat = nist->FindOrBuildMaterial("G4_AIR");
-    G4ThreeVector transDet_pos = G4ThreeVector(0., 0., -300.*mm);
+    //    G4Material* transDet_mat = nist->FindOrBuildMaterial("G4_AIR");
+    //    G4ThreeVector transDet_pos = G4ThreeVector(0., 0., -300.*mm);
 
     // Transmission detector shape
     //
-    G4double tPx = 100.*mm / 2.;    // half length in x
-    G4double tPy = 100.*mm / 2.;    // half length in y
-    G4double tPz = 1.*mm / 2.;      // half length in z
+    //    G4double tPx = 100.*mm / 2.;    // half length in x
+    //    G4double tPy = 100.*mm / 2.;    // half length in y
+    //    G4double tPz = 1.*mm / 2.;      // half length in z
 
     // Solid volume
     //
-    G4Box* transDet_solid = new G4Box("transmissionDet",      //its name
-                                      tPx,                // half length in x
-                                      tPy,                // half length in y
-                                      tPz);               // half length in z
+    //    G4Box* transDet_solid = new G4Box("transmissionDet",      //its name
+    //                                      tPx,                // half length in x
+    //                                      tPy,                // half length in y
+    //                                      tPz);               // half length in z
 
     // Logic volume
     //
-    G4LogicalVolume* transDet_logic = new G4LogicalVolume(transDet_solid,        // its solid
-                                                          transDet_mat,          // its material
-                                                          "transmissionDet");    // its name
+    //    G4LogicalVolume* transDet_logic = new G4LogicalVolume(transDet_solid,        // its solid
+    //                                                          transDet_mat,          // its material
+    //                                                          "transmissionDet");    // its name
 
     // Physical volume
     //
-    new G4PVPlacement(0,                       // rotation
-                      transDet_pos,            // at position
-                      transDet_logic,          // its logical volume
-                      "transmissionDet",       // its name
-                      logicWorld,              // its mother  volume
-                      false,                   // no boolean operation
-                      0,                       // copy number
-                      checkOverlaps);          // overlaps checking
+    //    new G4PVPlacement(0,                       // rotation
+    //                      transDet_pos,            // at position
+    //                      transDet_logic,          // its logical volume
+    //                      "transmissionDet",       // its name
+    //                      logicWorld,              // its mother  volume
+    //                      false,                   // no boolean operation
+    //                      0,                       // copy number
+    //                      checkOverlaps);          // overlaps checking
 
     // Visualization properties
     //
-    G4VisAttributes* transDet_Attributes  = new G4VisAttributes();
-    transDet_Attributes->SetForceSolid(true);
-    transDet_Attributes->SetColour(0., 0.9, 0.9, 0.5);
-    transDet_logic->SetVisAttributes(transDet_Attributes);
+    //    G4VisAttributes* transDet_Attributes  = new G4VisAttributes();
+    //    transDet_Attributes->SetForceSolid(true);
+    //    transDet_Attributes->SetColour(0., 0.9, 0.9, 0.5);
+    //    transDet_logic->SetVisAttributes(transDet_Attributes);
 
     //
     // Imaging Object
     //
-    G4Material* ImagingObj_mat = nist->FindOrBuildMaterial("G4_TISSUE_SOFT_ICRP");
-    G4ThreeVector ImagingObj_pos = G4ThreeVector(0., 0., -70.*mm);
-    G4RotationMatrix *ImagingObj_rot = new G4RotationMatrix(0., 0., 0.);
-    ImagingObj_rot->rotateX(90.*deg);   // Rotate object by 90 deg about the X-axis
+    //    G4Material* ImagingObj_mat = nist->FindOrBuildMaterial("G4_TISSUE_SOFT_ICRP");
+    //    G4ThreeVector ImagingObj_pos = G4ThreeVector(0., 0., -70.*mm);
+    //    G4RotationMatrix *ImagingObj_rot = new G4RotationMatrix(0., 0., 0.);
+    //    ImagingObj_rot->rotateX(90.*deg);   // Rotate object by 90 deg about the X-axis
 
     // Cylindircal mice shape
     //
-    G4double fRMin = 0.*mm;          // Inner radius
-    G4double fRMax = 30.*mm / 2.;    // Outer radius
-    G4double fDz = 80.*mm / 2.;      // half length in z
-    G4double fSPhi = 0.*deg;         // The starting phi angle
-    G4double fDPhi = 360.*deg;       // Delta angle of the segment
+    //    G4double fRMin = 0.*mm;          // Inner radius
+    //    G4double fRMax = 30.*mm / 2.;    // Outer radius
+    //    G4double fDz = 80.*mm / 2.;      // half length in z
+    //    G4double fSPhi = 0.*deg;         // The starting phi angle
+    //    G4double fDPhi = 360.*deg;       // Delta angle of the segment
 
     // Solid volume
     //
-    G4Tubs* ImagingObj_solid = new G4Tubs("imagingObject",      //its name
-                                          fRMin,                // Inner radius
-                                          fRMax,                // Outer radius
-                                          fDz,                  // half length in z
-                                          fSPhi,                // The starting phi angle
-                                          fDPhi);               // Delta angle of the segment
+    //    G4Tubs* ImagingObj_solid = new G4Tubs("imagingObject",      //its name
+    //                                          fRMin,                // Inner radius
+    //                                          fRMax,                // Outer radius
+    //                                          fDz,                  // half length in z
+    //                                          fSPhi,                // The starting phi angle
+    //                                          fDPhi);               // Delta angle of the segment
 
     // Logic volume
     //
-    G4LogicalVolume* ImagingObj_logic = new G4LogicalVolume(ImagingObj_solid,        // its solid
-                                                            ImagingObj_mat,          // its material
-                                                            "imagingObject");        // its name
+    //    G4LogicalVolume* ImagingObj_logic = new G4LogicalVolume(ImagingObj_solid,        // its solid
+    //                                                            ImagingObj_mat,          // its material
+    //                                                            "imagingObject");        // its name
 
     // Physical volume
     //
-    new G4PVPlacement(ImagingObj_rot,          // rotation
-                      ImagingObj_pos,          // at position
-                      ImagingObj_logic,        // its logical volume
-                      "imagingObject",         // its name
-                      logicWorld,              // its mother  volume
-                      false,                   // no boolean operation
-                      0,                       // copy number
-                      checkOverlaps);          // overlaps checking
+    //    new G4PVPlacement(ImagingObj_rot,          // rotation
+    //                      ImagingObj_pos,          // at position
+    //                      ImagingObj_logic,        // its logical volume
+    //                      "imagingObject",         // its name
+    //                      logicWorld,              // its mother  volume
+    //                      false,                   // no boolean operation
+    //                      0,                       // copy number
+    //                      checkOverlaps);          // overlaps checking
 
     // Visualization properties
     //
-    G4VisAttributes* ImagingObj_Attributes  = new G4VisAttributes();
-    ImagingObj_Attributes->SetForceSolid(true);
-    ImagingObj_Attributes->SetColour(1., 0.9, 0.9, 0.5);
-    ImagingObj_logic->SetVisAttributes(ImagingObj_Attributes);
+    //    G4VisAttributes* ImagingObj_Attributes  = new G4VisAttributes();
+    //    ImagingObj_Attributes->SetForceSolid(true);
+    //    ImagingObj_Attributes->SetColour(1., 0.9, 0.9, 0.5);
+    //    ImagingObj_logic->SetVisAttributes(ImagingObj_Attributes);
 
     // Set imaging object as scoring volume for dose calculation
     //
-    fScoringVolume = ImagingObj_logic;
+    //    fScoringVolume = ImagingObj_logic;
 
     //
     // Contrast agent - Imaging Object
     //
-    G4Material* contrast_mat  = nist->FindOrBuildMaterial("G4_Gd");
-    G4double contrast_density = contrast_mat->GetDensity();
-    G4double imagingObj_density = ImagingObj_mat->GetDensity();
+    //    G4Material* contrast_mat  = nist->FindOrBuildMaterial("G4_Gd");
+    //    G4double contrast_density = contrast_mat->GetDensity();
+    //    G4double imagingObj_density = ImagingObj_mat->GetDensity();
 
-    G4double contrast_Fmass = 0.01;
-    G4double imagingObj_fmass = 1. - contrast_Fmass;
-    G4double density = contrast_Fmass * contrast_density + imagingObj_fmass * imagingObj_density;
+    //    G4double contrast_Fmass = 0.01;
+    //    G4double imagingObj_fmass = 1. - contrast_Fmass;
+    //    G4double density = contrast_Fmass * contrast_density + imagingObj_fmass * imagingObj_density;
 
-    G4Material *contrast_solution = new G4Material("CONTRAST", density, 2);
-    contrast_solution->AddMaterial(ImagingObj_mat, imagingObj_fmass);
-    contrast_solution->AddMaterial(contrast_mat, contrast_Fmass);
+    //    G4Material *contrast_solution = new G4Material("CONTRAST", density, 2);
+    //    contrast_solution->AddMaterial(ImagingObj_mat, imagingObj_fmass);
+    //    contrast_solution->AddMaterial(contrast_mat, contrast_Fmass);
 
     // Position
-    G4ThreeVector contrast_pos = G4ThreeVector(0., 0., 0.*mm);
+    //    G4ThreeVector contrast_pos = G4ThreeVector(0., 0., 0.*mm);
 
     // Spherical contrast
     //
-    G4double cRMax = 10.*mm / 2.;    // Outer radius
+    //    G4double cRMax = 10.*mm / 2.;    // Outer radius
 
     // Solid volume
     //
-    G4Orb* contrast_solid = new G4Orb("CONTRAST",      // its name
-                                      cRMax);          // Outer radius
+    //    G4Orb* contrast_solid = new G4Orb("CONTRAST",      // its name
+    //                                      cRMax);          // Outer radius
 
     // Logic volume
     //
-    G4LogicalVolume* contrast_logic = new G4LogicalVolume(contrast_solid,     // its solid
-                                                          contrast_solution,       // its material
-                                                          "CONTRAST");        // its name
+    //    G4LogicalVolume* contrast_logic = new G4LogicalVolume(contrast_solid,     // its solid
+    //                                                          contrast_solution,       // its material
+    //                                                          "CONTRAST");        // its name
 
     // Physical volume
     //
-    new G4PVPlacement(0,                     // rotation
-                      contrast_pos,          // at position
-                      contrast_logic,        // its logical volume
-                      "CONTRAST",            // its name
-                      ImagingObj_logic,      // its mother  volume
-                      false,                 // no boolean operation
-                      0,                     // copy number
-                      checkOverlaps);        // overlaps checking
+    //    new G4PVPlacement(0,                     // rotation
+    //                      contrast_pos,          // at position
+    //                      contrast_logic,        // its logical volume
+    //                      "CONTRAST",            // its name
+    //                      ImagingObj_logic,      // its mother  volume
+    //                      false,                 // no boolean operation
+    //                      0,                     // copy number
+    //                      checkOverlaps);        // overlaps checking
 
     // Visualization properties
     //
-    G4VisAttributes* contrast_Attributes  = new G4VisAttributes();
-    contrast_Attributes->SetForceSolid(true);
-    contrast_Attributes->SetColour(0., 0., 1., 0.5);
-    contrast_logic->SetVisAttributes(contrast_Attributes);
+    //    G4VisAttributes* contrast_Attributes  = new G4VisAttributes();
+    //    contrast_Attributes->SetForceSolid(true);
+    //    contrast_Attributes->SetColour(0., 0., 1., 0.5);
+    //    contrast_logic->SetVisAttributes(contrast_Attributes);
 
     //
     // Fluorescence detector
     //
-    G4Material* fluoDet_mat = nist->FindOrBuildMaterial("G4_CADMIUM_TELLURIDE");
-    G4ThreeVector fluoDet_pos = G4ThreeVector(70.*mm, 0., 60.*mm);
-    G4RotationMatrix fluoDet_rot = G4RotationMatrix(0., 0., 0.);
-    fluoDet_rot.rotateY(90.*deg);   // Rotate fluorescence detector by 90 deg about the X-axis
+    //    G4Material* fluoDet_mat = nist->FindOrBuildMaterial("G4_CADMIUM_TELLURIDE");
+    //    G4ThreeVector fluoDet_pos = G4ThreeVector(70.*mm, 0., 60.*mm);
+    //    G4RotationMatrix fluoDet_rot = G4RotationMatrix(0., 0., 0.);
+    //    fluoDet_rot.rotateY(90.*deg);   // Rotate fluorescence detector by 90 deg about the X-axis
 
     // Transmission detector shape
     //
-    G4double fPx = 100.*mm / 2.;    // half length in x
-    G4double fPy = 100.*mm / 2.;    // half length in y
-    G4double fPz = 1.*mm / 2.;      // half length in z
+    //    G4double fPx = 100.*mm / 2.;    // half length in x
+    //    G4double fPy = 100.*mm / 2.;    // half length in y
+    //    G4double fPz = 1.*mm / 2.;      // half length in z
 
     // Solid volume
     //
-    G4Box* fluoDet_solid = new G4Box("fluorescenceDet",  // its name
-                                     fPx,                // half length in x
-                                     fPy,                // half length in y
-                                     fPz);               // half length in z
+    //    G4Box* fluoDet_solid = new G4Box("fluorescenceDet",  // its name
+    //                                     fPx,                // half length in x
+    //                                     fPy,                // half length in y
+    //                                     fPz);               // half length in z
 
     // Logic volume
     //
-    G4LogicalVolume* fluoDet_logic = new G4LogicalVolume(fluoDet_solid,        // its solid
-                                                         fluoDet_mat,          // its material
-                                                         "fluorescenceDet");   // its name
+    //    G4LogicalVolume* fluoDet_logic = new G4LogicalVolume(fluoDet_solid,        // its solid
+    //                                                         fluoDet_mat,          // its material
+    //                                                         "fluorescenceDet");   // its name
 
     // 3D transform operations
-    G4Transform3D fluo_transform = G4Rotate3D(fluoDet_rot)*G4Translate3D(fluoDet_pos);
+    //    G4Transform3D fluo_transform = G4Rotate3D(fluoDet_rot)*G4Translate3D(fluoDet_pos);
 
     // Physical volume
     //
-    new G4PVPlacement(fluo_transform,          // 3D transform
-                      fluoDet_logic,           // its logical volume
-                      "fluorescenceDet",       // its name
-                      logicWorld,              // its mother  volume
-                      false,                   // no boolean operation
-                      0,                       // copy number
-                      checkOverlaps);          // overlaps checking
+    //    new G4PVPlacement(fluo_transform,          // 3D transform
+    //                      fluoDet_logic,           // its logical volume
+    //                      "fluorescenceDet",       // its name
+    //                      logicWorld,              // its mother  volume
+    //                      false,                   // no boolean operation
+    //                      0,                       // copy number
+    //                      checkOverlaps);          // overlaps checking
 
     // Visualization properties
     //
-    G4VisAttributes* fluoDet_Attributes  = new G4VisAttributes();
-    fluoDet_Attributes->SetForceSolid(true);
-    fluoDet_Attributes->SetColour(9., 0., 0., 0.5);
-    fluoDet_logic->SetVisAttributes(fluoDet_Attributes);
+    //    G4VisAttributes* fluoDet_Attributes  = new G4VisAttributes();
+    //    fluoDet_Attributes->SetForceSolid(true);
+    //    fluoDet_Attributes->SetColour(9., 0., 0., 0.5);
+    //    fluoDet_logic->SetVisAttributes(fluoDet_Attributes);
 
     //
     // Always return the physical World

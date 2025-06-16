@@ -46,7 +46,7 @@ set(XRIMAGING_SCRIPTS
   XRImaging.in
   XRImaging.out
   init_vis.mac
-  Energy.hist
+  #Energy.hist
   vis.mac
   )
 

@@ -41,26 +41,25 @@ class XRIRunAction;
 
 class XRIEventAction : public G4UserEventAction
 {
-  public:
+public:
     XRIEventAction(XRIRunAction* runAction);
     virtual ~XRIEventAction();
 
     virtual void BeginOfEventAction(const G4Event* event);
     virtual void EndOfEventAction(const G4Event* event);
 
-    void AddEdep(G4double edep) { fEdep += edep; }
-    void AddEdepFluo(G4double edep) { fEdepFluo += edep; }
+    //    void AddEdep(G4double edep) { fEdep += edep; }
+    //    void AddEdepFluo(G4double edep) { fEdepFluo += edep; }
+    //    G4double AddNoise(G4double energy) const;
 
-    G4double AddNoise(G4double energy) const;
-
-  private:
+private:
     XRIRunAction* fRunAction;
-    G4double fEdep;
-    G4double fEdepFluo;
+    //    G4double fEdep;
+    //    G4double fEdepFluo;
 };
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 #endif
 
-    
+
