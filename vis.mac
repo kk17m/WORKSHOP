@@ -95,7 +95,7 @@
 /vis/set/lineWidth     # Revert to default line width (1.)
 
 # Attach text to one edge, with a small, fixed offset
-/vis/scene/add/text 1 -4 21 cm 18 4 4 X-ray Source
+/vis/scene/add/text 1 -4 21 cm 18 4 4 Source
 #/vis/scene/add/text 0 7 -6 cm 18 4 4 Imaging Object
 #/vis/scene/add/text 0 8 -30 cm 18 4 4 Transmission Detector
 #/vis/scene/add/text 7 -7 -6 cm 18 4 4 Fluorescence Detector
