@@ -104,45 +104,45 @@ G4VPhysicalVolume* XRIDetectorConstruction::Construct()
     //
     // Transmission detector
     //
-    //    G4Material* transDet_mat = nist->FindOrBuildMaterial("G4_AIR");
-    //    G4ThreeVector transDet_pos = G4ThreeVector(0., 0., -300.*mm);
+    G4Material* transDet_mat = nist->FindOrBuildMaterial("G4_AIR");
+    G4ThreeVector transDet_pos = G4ThreeVector(0., 0., -300.*mm);
 
     // Transmission detector shape
     //
-    //    G4double tPx = 100.*mm / 2.;    // half length in x
-    //    G4double tPy = 100.*mm / 2.;    // half length in y
-    //    G4double tPz = 1.*mm / 2.;      // half length in z
+    G4double tPx = 100.*mm / 2.;    // half length in x
+    G4double tPy = 100.*mm / 2.;    // half length in y
+    G4double tPz = 1.*mm / 2.;      // half length in z
 
     // Solid volume
     //
-    //    G4Box* transDet_solid = new G4Box("transmissionDet",      //its name
-    //                                      tPx,                // half length in x
-    //                                      tPy,                // half length in y
-    //                                      tPz);               // half length in z
+    G4Box* transDet_solid = new G4Box("transmissionDet",      //its name
+                                      tPx,                // half length in x
+                                      tPy,                // half length in y
+                                      tPz);               // half length in z
 
     // Logic volume
     //
-    //    G4LogicalVolume* transDet_logic = new G4LogicalVolume(transDet_solid,        // its solid
-    //                                                          transDet_mat,          // its material
-    //                                                          "transmissionDet");    // its name
+    G4LogicalVolume* transDet_logic = new G4LogicalVolume(transDet_solid,        // its solid
+                                                          transDet_mat,          // its material
+                                                          "transmissionDet");    // its name
 
     // Physical volume
     //
-    //    new G4PVPlacement(0,                       // rotation
-    //                      transDet_pos,            // at position
-    //                      transDet_logic,          // its logical volume
-    //                      "transmissionDet",       // its name
-    //                      logicWorld,              // its mother  volume
-    //                      false,                   // no boolean operation
-    //                      0,                       // copy number
-    //                      checkOverlaps);          // overlaps checking
+    new G4PVPlacement(0,                       // rotation
+                      transDet_pos,            // at position
+                      transDet_logic,          // its logical volume
+                      "transmissionDet",       // its name
+                      logicWorld,              // its mother  volume
+                      false,                   // no boolean operation
+                      0,                       // copy number
+                      checkOverlaps);          // overlaps checking
 
     // Visualization properties
     //
-    //    G4VisAttributes* transDet_Attributes  = new G4VisAttributes();
-    //    transDet_Attributes->SetForceSolid(true);
-    //    transDet_Attributes->SetColour(0., 0.9, 0.9, 0.5);
-    //    transDet_logic->SetVisAttributes(transDet_Attributes);
+    G4VisAttributes* transDet_Attributes  = new G4VisAttributes();
+    transDet_Attributes->SetForceSolid(true);
+    transDet_Attributes->SetColour(0., 0.9, 0.9, 0.5);
+    transDet_logic->SetVisAttributes(transDet_Attributes);
 
     //
     // Imaging Object
