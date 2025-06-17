@@ -30,15 +30,15 @@
 ### Energy (beam) properties ##############
 
 ## Mono energy
-/gps/ene/type Gauss
-/gps/ene/mono 65.0 keV
-/gps/ene/sigma 0.2 keV
+#/gps/ene/type Gauss
+#/gps/ene/mono 65.0 keV
+#/gps/ene/sigma 0.2 keV
 
 ## Poly energy
-#/gps/ene/type Arb
-#/gps/hist/type arb
-#/control/execute Energy.hist
-#/gps/hist/inter Lin
+/gps/ene/type Arb
+/gps/hist/type arb
+/control/execute Energy.hist
+/gps/hist/inter Lin
 
 ### Angular (beam) properties ##############
 
@@ -46,7 +46,7 @@
 /gps/ang/rot1 1 0 0
 /gps/ang/rot2 0 1 0
 /gps/ang/mintheta 0 deg
-/gps/ang/maxtheta 0.01 deg
+/gps/ang/maxtheta 6 deg
 /gps/ang/minphi 0 deg
 /gps/ang/maxphi 360 deg
 ##/gps/direction 0 0 -1
