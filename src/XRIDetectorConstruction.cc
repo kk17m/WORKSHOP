@@ -147,51 +147,51 @@ G4VPhysicalVolume* XRIDetectorConstruction::Construct()
     //
     // Imaging Object
     //
-    //    G4Material* ImagingObj_mat = nist->FindOrBuildMaterial("G4_TISSUE_SOFT_ICRP");
-    //    G4ThreeVector ImagingObj_pos = G4ThreeVector(0., 0., -70.*mm);
-    //    G4RotationMatrix *ImagingObj_rot = new G4RotationMatrix(0., 0., 0.);
-    //    ImagingObj_rot->rotateX(90.*deg);   // Rotate object by 90 deg about the X-axis
+    G4Material* ImagingObj_mat = nist->FindOrBuildMaterial("G4_TISSUE_SOFT_ICRP");
+    G4ThreeVector ImagingObj_pos = G4ThreeVector(0., 0., -70.*mm);
+    G4RotationMatrix *ImagingObj_rot = new G4RotationMatrix(0., 0., 0.);
+    ImagingObj_rot->rotateX(90.*deg);   // Rotate object by 90 deg about the X-axis
 
     // Cylindircal mice shape
     //
-    //    G4double fRMin = 0.*mm;          // Inner radius
-    //    G4double fRMax = 30.*mm / 2.;    // Outer radius
-    //    G4double fDz = 80.*mm / 2.;      // half length in z
-    //    G4double fSPhi = 0.*deg;         // The starting phi angle
-    //    G4double fDPhi = 360.*deg;       // Delta angle of the segment
+    G4double fRMin = 0.*mm;          // Inner radius
+    G4double fRMax = 30.*mm / 2.;    // Outer radius
+    G4double fDz = 80.*mm / 2.;      // half length in z
+    G4double fSPhi = 0.*deg;         // The starting phi angle
+    G4double fDPhi = 360.*deg;       // Delta angle of the segment
 
     // Solid volume
     //
-    //    G4Tubs* ImagingObj_solid = new G4Tubs("imagingObject",      //its name
-    //                                          fRMin,                // Inner radius
-    //                                          fRMax,                // Outer radius
-    //                                          fDz,                  // half length in z
-    //                                          fSPhi,                // The starting phi angle
-    //                                          fDPhi);               // Delta angle of the segment
+    G4Tubs* ImagingObj_solid = new G4Tubs("imagingObject",      //its name
+                                          fRMin,                // Inner radius
+                                          fRMax,                // Outer radius
+                                          fDz,                  // half length in z
+                                          fSPhi,                // The starting phi angle
+                                          fDPhi);               // Delta angle of the segment
 
     // Logic volume
     //
-    //    G4LogicalVolume* ImagingObj_logic = new G4LogicalVolume(ImagingObj_solid,        // its solid
-    //                                                            ImagingObj_mat,          // its material
-    //                                                            "imagingObject");        // its name
+    G4LogicalVolume* ImagingObj_logic = new G4LogicalVolume(ImagingObj_solid,        // its solid
+                                                            ImagingObj_mat,          // its material
+                                                            "imagingObject");        // its name
 
     // Physical volume
     //
-    //    new G4PVPlacement(ImagingObj_rot,          // rotation
-    //                      ImagingObj_pos,          // at position
-    //                      ImagingObj_logic,        // its logical volume
-    //                      "imagingObject",         // its name
-    //                      logicWorld,              // its mother  volume
-    //                      false,                   // no boolean operation
-    //                      0,                       // copy number
-    //                      checkOverlaps);          // overlaps checking
+    new G4PVPlacement(ImagingObj_rot,          // rotation
+                      ImagingObj_pos,          // at position
+                      ImagingObj_logic,        // its logical volume
+                      "imagingObject",         // its name
+                      logicWorld,              // its mother  volume
+                      false,                   // no boolean operation
+                      0,                       // copy number
+                      checkOverlaps);          // overlaps checking
 
     // Visualization properties
     //
-    //    G4VisAttributes* ImagingObj_Attributes  = new G4VisAttributes();
-    //    ImagingObj_Attributes->SetForceSolid(true);
-    //    ImagingObj_Attributes->SetColour(1., 0.9, 0.9, 0.5);
-    //    ImagingObj_logic->SetVisAttributes(ImagingObj_Attributes);
+    G4VisAttributes* ImagingObj_Attributes  = new G4VisAttributes();
+    ImagingObj_Attributes->SetForceSolid(true);
+    ImagingObj_Attributes->SetColour(1., 0.9, 0.9, 0.5);
+    ImagingObj_logic->SetVisAttributes(ImagingObj_Attributes);
 
     // Set imaging object as scoring volume for dose calculation
     //
@@ -200,53 +200,53 @@ G4VPhysicalVolume* XRIDetectorConstruction::Construct()
     //
     // Contrast agent - Imaging Object
     //
-    //    G4Material* contrast_mat  = nist->FindOrBuildMaterial("G4_Gd");
-    //    G4double contrast_density = contrast_mat->GetDensity();
-    //    G4double imagingObj_density = ImagingObj_mat->GetDensity();
+    G4Material* contrast_mat  = nist->FindOrBuildMaterial("G4_Gd");
+    G4double contrast_density = contrast_mat->GetDensity();
+    G4double imagingObj_density = ImagingObj_mat->GetDensity();
 
-    //    G4double contrast_Fmass = 0.01;
-    //    G4double imagingObj_fmass = 1. - contrast_Fmass;
-    //    G4double density = contrast_Fmass * contrast_density + imagingObj_fmass * imagingObj_density;
+    G4double contrast_Fmass = 0.01;
+    G4double imagingObj_fmass = 1. - contrast_Fmass;
+    G4double density = contrast_Fmass * contrast_density + imagingObj_fmass * imagingObj_density;
 
-    //    G4Material *contrast_solution = new G4Material("CONTRAST", density, 2);
-    //    contrast_solution->AddMaterial(ImagingObj_mat, imagingObj_fmass);
-    //    contrast_solution->AddMaterial(contrast_mat, contrast_Fmass);
+    G4Material *contrast_solution = new G4Material("CONTRAST", density, 2);
+    contrast_solution->AddMaterial(ImagingObj_mat, imagingObj_fmass);
+    contrast_solution->AddMaterial(contrast_mat, contrast_Fmass);
 
     // Position
-    //    G4ThreeVector contrast_pos = G4ThreeVector(0., 0., 0.*mm);
+    G4ThreeVector contrast_pos = G4ThreeVector(0., 0., 0.*mm);
 
     // Spherical contrast
     //
-    //    G4double cRMax = 10.*mm / 2.;    // Outer radius
+    G4double cRMax = 10.*mm / 2.;    // Outer radius
 
     // Solid volume
     //
-    //    G4Orb* contrast_solid = new G4Orb("CONTRAST",      // its name
-    //                                      cRMax);          // Outer radius
+    G4Orb* contrast_solid = new G4Orb("CONTRAST",      // its name
+                                      cRMax);          // Outer radius
 
     // Logic volume
     //
-    //    G4LogicalVolume* contrast_logic = new G4LogicalVolume(contrast_solid,     // its solid
-    //                                                          contrast_solution,       // its material
-    //                                                          "CONTRAST");        // its name
+    G4LogicalVolume* contrast_logic = new G4LogicalVolume(contrast_solid,     // its solid
+                                                          contrast_solution,       // its material
+                                                          "CONTRAST");        // its name
 
     // Physical volume
     //
-    //    new G4PVPlacement(0,                     // rotation
-    //                      contrast_pos,          // at position
-    //                      contrast_logic,        // its logical volume
-    //                      "CONTRAST",            // its name
-    //                      ImagingObj_logic,      // its mother  volume
-    //                      false,                 // no boolean operation
-    //                      0,                     // copy number
-    //                      checkOverlaps);        // overlaps checking
+    new G4PVPlacement(0,                     // rotation
+                      contrast_pos,          // at position
+                      contrast_logic,        // its logical volume
+                      "CONTRAST",            // its name
+                      ImagingObj_logic,      // its mother  volume
+                      false,                 // no boolean operation
+                      0,                     // copy number
+                      checkOverlaps);        // overlaps checking
 
     // Visualization properties
     //
-    //    G4VisAttributes* contrast_Attributes  = new G4VisAttributes();
-    //    contrast_Attributes->SetForceSolid(true);
-    //    contrast_Attributes->SetColour(0., 0., 1., 0.5);
-    //    contrast_logic->SetVisAttributes(contrast_Attributes);
+    G4VisAttributes* contrast_Attributes  = new G4VisAttributes();
+    contrast_Attributes->SetForceSolid(true);
+    contrast_Attributes->SetColour(0., 0., 1., 0.5);
+    contrast_logic->SetVisAttributes(contrast_Attributes);
 
     //
     // Fluorescence detector
