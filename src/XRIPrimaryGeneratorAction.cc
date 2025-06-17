@@ -51,7 +51,7 @@ XRIPrimaryGeneratorAction::XRIPrimaryGeneratorAction()
     // default particle kinematic
     G4ParticleTable* particleTable = G4ParticleTable::GetParticleTable();
     G4String particleName;
-    G4ParticleDefinition* particle = particleTable->FindParticle(particleName="e-");
+    G4ParticleDefinition* particle = particleTable->FindParticle(particleName="gamma");
     fGeneralParticleSource->SetParticleDefinition(particle);
 }
 
