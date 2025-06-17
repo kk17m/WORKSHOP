@@ -251,49 +251,49 @@ G4VPhysicalVolume* XRIDetectorConstruction::Construct()
     //
     // Fluorescence detector
     //
-    //    G4Material* fluoDet_mat = nist->FindOrBuildMaterial("G4_CADMIUM_TELLURIDE");
-    //    G4ThreeVector fluoDet_pos = G4ThreeVector(70.*mm, 0., 60.*mm);
-    //    G4RotationMatrix fluoDet_rot = G4RotationMatrix(0., 0., 0.);
-    //    fluoDet_rot.rotateY(90.*deg);   // Rotate fluorescence detector by 90 deg about the X-axis
+    G4Material* fluoDet_mat = nist->FindOrBuildMaterial("G4_CADMIUM_TELLURIDE");
+    G4ThreeVector fluoDet_pos = G4ThreeVector(70.*mm, 0., 60.*mm);
+    G4RotationMatrix fluoDet_rot = G4RotationMatrix(0., 0., 0.);
+    fluoDet_rot.rotateY(90.*deg);   // Rotate fluorescence detector by 90 deg about the X-axis
 
     // Transmission detector shape
     //
-    //    G4double fPx = 100.*mm / 2.;    // half length in x
-    //    G4double fPy = 100.*mm / 2.;    // half length in y
-    //    G4double fPz = 1.*mm / 2.;      // half length in z
+    G4double fPx = 100.*mm / 2.;    // half length in x
+    G4double fPy = 100.*mm / 2.;    // half length in y
+    G4double fPz = 1.*mm / 2.;      // half length in z
 
     // Solid volume
     //
-    //    G4Box* fluoDet_solid = new G4Box("fluorescenceDet",  // its name
-    //                                     fPx,                // half length in x
-    //                                     fPy,                // half length in y
-    //                                     fPz);               // half length in z
+    G4Box* fluoDet_solid = new G4Box("fluorescenceDet",  // its name
+                                     fPx,                // half length in x
+                                     fPy,                // half length in y
+                                     fPz);               // half length in z
 
     // Logic volume
     //
-    //    G4LogicalVolume* fluoDet_logic = new G4LogicalVolume(fluoDet_solid,        // its solid
-    //                                                         fluoDet_mat,          // its material
-    //                                                         "fluorescenceDet");   // its name
+    G4LogicalVolume* fluoDet_logic = new G4LogicalVolume(fluoDet_solid,        // its solid
+                                                         fluoDet_mat,          // its material
+                                                         "fluorescenceDet");   // its name
 
     // 3D transform operations
-    //    G4Transform3D fluo_transform = G4Rotate3D(fluoDet_rot)*G4Translate3D(fluoDet_pos);
+    G4Transform3D fluo_transform = G4Rotate3D(fluoDet_rot)*G4Translate3D(fluoDet_pos);
 
     // Physical volume
     //
-    //    new G4PVPlacement(fluo_transform,          // 3D transform
-    //                      fluoDet_logic,           // its logical volume
-    //                      "fluorescenceDet",       // its name
-    //                      logicWorld,              // its mother  volume
-    //                      false,                   // no boolean operation
-    //                      0,                       // copy number
-    //                      checkOverlaps);          // overlaps checking
+    new G4PVPlacement(fluo_transform,          // 3D transform
+                      fluoDet_logic,           // its logical volume
+                      "fluorescenceDet",       // its name
+                      logicWorld,              // its mother  volume
+                      false,                   // no boolean operation
+                      0,                       // copy number
+                      checkOverlaps);          // overlaps checking
 
     // Visualization properties
     //
-    //    G4VisAttributes* fluoDet_Attributes  = new G4VisAttributes();
-    //    fluoDet_Attributes->SetForceSolid(true);
-    //    fluoDet_Attributes->SetColour(9., 0., 0., 0.5);
-    //    fluoDet_logic->SetVisAttributes(fluoDet_Attributes);
+    G4VisAttributes* fluoDet_Attributes  = new G4VisAttributes();
+    fluoDet_Attributes->SetForceSolid(true);
+    fluoDet_Attributes->SetColour(9., 0., 0., 0.5);
+    fluoDet_logic->SetVisAttributes(fluoDet_Attributes);
 
     //
     // Always return the physical World
