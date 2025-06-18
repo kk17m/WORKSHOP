@@ -50,7 +50,7 @@ public:
 
     //    void AddEdep(G4double edep) { fEdep += edep; }
     void AddEdepFluo(G4double edep) { fEdepFluo += edep; }
-    //    G4double AddNoise(G4double energy) const;
+    G4double AddNoise(G4double energy) const;
 
 private:
     XRIRunAction* fRunAction;
