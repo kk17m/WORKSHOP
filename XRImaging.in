@@ -17,7 +17,7 @@
 
 ### Spatial (beam) properties ##############
 
-#/gps/pos/type Beam
+/gps/pos/type Beam
 /gps/pos/shape Circle
 /gps/pos/centre 0. 0. 200. mm
 /gps/pos/rot1 1 0 0

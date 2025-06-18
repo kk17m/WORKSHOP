@@ -98,12 +98,12 @@ void XRISteppingAction::UserSteppingAction(const G4Step* step)
     //
     // fluorescence detector
     //
-    //    if ((preStepVol == "World" && postStepVol == "fluorescenceDet") && particle == "gamma")
-    //    {
-    //        const G4double ekin = step->GetTrack()->GetKineticEnergy();
-    //        G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
-    //        analysisManager->FillH1(1, ekin);
-    //    }
+    if ((preStepVol == "World" && postStepVol == "fluorescenceDet") && particle == "gamma")
+    {
+        const G4double ekin = step->GetTrack()->GetKineticEnergy();
+        G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
+        analysisManager->FillH1(1, ekin);
+    }
 
     //    if (preStepVol == "fluorescenceDet")
     //    {
