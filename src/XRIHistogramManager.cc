@@ -69,6 +69,7 @@ void XRIHistogramManager::Book()
 
   G4double eMin = 0.*keV;
   G4double eMax = 80.*keV;
+  G4double hLength = 50.*mm;
 
   G4int ih = analysisManager->CreateH1("h1.1", "Ideal Fluorescence Detector: Incident energy spectrum", 1000, eMin, eMax, "keV");
   analysisManager->SetH1Activation(ih, true);
@@ -76,7 +77,7 @@ void XRIHistogramManager::Book()
   ih = analysisManager->CreateH1("h1.2","Realistic Fluorescence Detector: Deposited energy, noise, ...", 1000, eMin, eMax, "keV");
   analysisManager->SetH1Activation(ih, true);
 
-  ih = analysisManager->CreateH2("h2.1","Ideal Transmission Detector: Counts in pixels", 500, -50.*mm, 50.*mm, 500, -50.*mm, 50.*mm, "mm", "mm");
+  ih = analysisManager->CreateH2("h2.1","Ideal Transmission Detector: Counts in pixels", 500, -hLength, hLength, 500, -hLength, hLength, "mm", "mm");
   analysisManager->SetH2Activation(ih, true);
 }
 

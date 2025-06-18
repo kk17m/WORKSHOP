@@ -41,8 +41,8 @@
 
 XRISteppingAction::XRISteppingAction(XRIEventAction* eventAction)
     : G4UserSteppingAction()
-//      fEventAction(eventAction),
-//      fScoringVolume(0)
+    //      fEventAction(eventAction),
+    //      fScoringVolume(0)
 {}
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -60,32 +60,32 @@ void XRISteppingAction::UserSteppingAction(const G4Step* step)
         return;
 
     // get particle name
-    //    const G4String particle = step->GetTrack()->GetParticleDefinition()->GetParticleName();
+    const G4String particle = step->GetTrack()->GetParticleDefinition()->GetParticleName();
 
     // get volume name for the pre-step point
-    //    const G4String preStepVol = step->GetPreStepPoint()->GetTouchableHandle()->GetVolume()->GetLogicalVolume()->GetName();
+    const G4String preStepVol = step->GetPreStepPoint()->GetTouchableHandle()->GetVolume()->GetLogicalVolume()->GetName();
 
     // get volume name for the post-step point
-    //    const G4String postStepVol = step->GetPostStepPoint()->GetTouchableHandle()->GetVolume()->GetLogicalVolume()->GetName();
+    const G4String postStepVol = step->GetPostStepPoint()->GetTouchableHandle()->GetVolume()->GetLogicalVolume()->GetName();
 
     // get volume of the current step
     //    G4LogicalVolume* volume = step->GetPreStepPoint()->GetTouchableHandle()->GetVolume()->GetLogicalVolume();
 
     // find local position coordinates using GetPtrTopTransform()
-    //    const G4AffineTransform* transformation = step->GetTrack()->GetTouchable()->GetHistory()->GetPtrTopTransform();
-    //    const G4ThreeVector localVetex = transformation->TransformPoint(step->GetTrack()->GetPosition());
-    //    const G4double x = localVetex.x();
-    //    const G4double y = localVetex.y();
+    const G4AffineTransform* transformation = step->GetTrack()->GetTouchable()->GetHistory()->GetPtrTopTransform();
+    const G4ThreeVector localVetex = transformation->TransformPoint(step->GetTrack()->GetPosition());
+    const G4double x = localVetex.x();
+    const G4double y = localVetex.y();
 
     //
     // dose scoring volume
     //
-//    if (!fScoringVolume) {
-//        const XRIDetectorConstruction* detectorConstruction = static_cast<const XRIDetectorConstruction*>
-//                (G4RunManager::GetRunManager()->GetUserDetectorConstruction());
+    //    if (!fScoringVolume) {
+    //        const XRIDetectorConstruction* detectorConstruction = static_cast<const XRIDetectorConstruction*>
+    //                (G4RunManager::GetRunManager()->GetUserDetectorConstruction());
 
-//        fScoringVolume = detectorConstruction->GetScoringVolume();
-//    }
+    //        fScoringVolume = detectorConstruction->GetScoringVolume();
+    //    }
 
     // check if we are in scoring volume
     //     if (volume == fScoringVolume)
@@ -114,11 +114,11 @@ void XRISteppingAction::UserSteppingAction(const G4Step* step)
     //
     // transmission detector
     //
-    //    if ((preStepVol == "transmissionDet" && postStepVol == "World") && particle == "gamma")
-    //    {
-    //        G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
-    //        analysisManager->FillH2(1, x, y);
-    //    }
+    if ((preStepVol == "transmissionDet" && postStepVol == "World") && particle == "gamma")
+    {
+        G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
+        analysisManager->FillH2(1, x, y);
+    }
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
