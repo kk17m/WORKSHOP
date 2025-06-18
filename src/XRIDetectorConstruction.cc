@@ -200,17 +200,23 @@ G4VPhysicalVolume* XRIDetectorConstruction::Construct()
     //
     // Contrast agent - Imaging Object
     //
-    G4Material* contrast_mat  = nist->FindOrBuildMaterial("G4_Gd");
-    G4double contrast_density = contrast_mat->GetDensity();
+    G4Material* contrast_mat_Gd  = nist->FindOrBuildMaterial("G4_Gd");
+    G4double contrast_density_Gd = contrast_mat_Gd->GetDensity();
+    G4Material* contrast_mat_I  = nist->FindOrBuildMaterial("G4_I");
+    G4double contrast_density_I = contrast_mat_I->GetDensity();
     G4double imagingObj_density = ImagingObj_mat->GetDensity();
 
-    G4double contrast_Fmass = 0.01;
-    G4double imagingObj_fmass = 1. - contrast_Fmass;
-    G4double density = contrast_Fmass * contrast_density + imagingObj_fmass * imagingObj_density;
+    G4double contrast_Fmass_Gd = 0.01;
+    G4double contrast_Fmass_I = 0.01;
+    G4double imagingObj_fmass = 1. - contrast_Fmass_Gd - contrast_Fmass_I;
+    G4double density = contrast_Fmass_Gd * contrast_density_Gd
+            + contrast_Fmass_I * contrast_density_I
+            + imagingObj_fmass * imagingObj_density;
 
-    G4Material *contrast_solution = new G4Material("CONTRAST", density, 2);
+    G4Material *contrast_solution = new G4Material("CONTRAST", density, 3);
     contrast_solution->AddMaterial(ImagingObj_mat, imagingObj_fmass);
-    contrast_solution->AddMaterial(contrast_mat, contrast_Fmass);
+    contrast_solution->AddMaterial(contrast_mat_Gd, contrast_Fmass_Gd);
+    contrast_solution->AddMaterial(contrast_mat_I, contrast_Fmass_I);
 
     // Position
     G4ThreeVector contrast_pos = G4ThreeVector(0., 0., 0.*mm);
@@ -251,7 +257,7 @@ G4VPhysicalVolume* XRIDetectorConstruction::Construct()
     //
     // Fluorescence detector
     //
-    G4Material* fluoDet_mat = nist->FindOrBuildMaterial("G4_CADMIUM_TELLURIDE");
+    G4Material* fluoDet_mat = nist->FindOrBuildMaterial("G4_Si");
     G4ThreeVector fluoDet_pos = G4ThreeVector(70.*mm, 0., 60.*mm);
     G4RotationMatrix fluoDet_rot = G4RotationMatrix(0., 0., 0.);
     fluoDet_rot.rotateY(90.*deg);   // Rotate fluorescence detector by 90 deg about the X-axis
