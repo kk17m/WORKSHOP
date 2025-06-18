@@ -43,8 +43,8 @@
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 XRIDetectorConstruction::XRIDetectorConstruction()
-    : G4VUserDetectorConstruction()
-    //      fScoringVolume(0)
+    : G4VUserDetectorConstruction(),
+      fScoringVolume(0)
 { }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -195,7 +195,7 @@ G4VPhysicalVolume* XRIDetectorConstruction::Construct()
 
     // Set imaging object as scoring volume for dose calculation
     //
-    //    fScoringVolume = ImagingObj_logic;
+    fScoringVolume = ImagingObj_logic;
 
     //
     // Contrast agent - Imaging Object

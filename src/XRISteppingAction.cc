@@ -41,8 +41,8 @@
 
 XRISteppingAction::XRISteppingAction(XRIEventAction* eventAction)
     : G4UserSteppingAction(),
-    fEventAction(eventAction)
-    //      fScoringVolume(0)
+      fEventAction(eventAction),
+      fScoringVolume(0)
 {}
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -69,7 +69,7 @@ void XRISteppingAction::UserSteppingAction(const G4Step* step)
     const G4String postStepVol = step->GetPostStepPoint()->GetTouchableHandle()->GetVolume()->GetLogicalVolume()->GetName();
 
     // get volume of the current step
-    //    G4LogicalVolume* volume = step->GetPreStepPoint()->GetTouchableHandle()->GetVolume()->GetLogicalVolume();
+    G4LogicalVolume* volume = step->GetPreStepPoint()->GetTouchableHandle()->GetVolume()->GetLogicalVolume();
 
     // find local position coordinates using GetPtrTopTransform()
     const G4AffineTransform* transformation = step->GetTrack()->GetTouchable()->GetHistory()->GetPtrTopTransform();
@@ -80,20 +80,20 @@ void XRISteppingAction::UserSteppingAction(const G4Step* step)
     //
     // dose scoring volume
     //
-    //    if (!fScoringVolume) {
-    //        const XRIDetectorConstruction* detectorConstruction = static_cast<const XRIDetectorConstruction*>
-    //                (G4RunManager::GetRunManager()->GetUserDetectorConstruction());
+    if (!fScoringVolume) {
+        const XRIDetectorConstruction* detectorConstruction = static_cast<const XRIDetectorConstruction*>
+                (G4RunManager::GetRunManager()->GetUserDetectorConstruction());
 
-    //        fScoringVolume = detectorConstruction->GetScoringVolume();
-    //    }
+        fScoringVolume = detectorConstruction->GetScoringVolume();
+    }
 
     // check if we are in scoring volume
-    //     if (volume == fScoringVolume)
-    //     {
-    //         // collect energy deposited in this step
-    //         G4double edepStep = step->GetTotalEnergyDeposit();
-    //         fEventAction->AddEdep(edepStep);
-    //     }
+    if (volume == fScoringVolume)
+    {
+        // collect energy deposited in this step
+        G4double edepStep = step->GetTotalEnergyDeposit();
+        fEventAction->AddEdep(edepStep);
+    }
 
     //
     // fluorescence detector

@@ -41,7 +41,7 @@
 XRIEventAction::XRIEventAction(XRIRunAction* runAction)
     : G4UserEventAction(),
       fRunAction(runAction),
-      //      fEdep(0.),
+      fEdep(0.),
       fEdepFluo(0.)
 {}
 
@@ -54,7 +54,7 @@ XRIEventAction::~XRIEventAction()
 
 void XRIEventAction::BeginOfEventAction(const G4Event*)
 {    
-    //    fEdep = 0.;
+    fEdep = 0.;
     fEdepFluo = 0.;
 }
 
@@ -63,7 +63,7 @@ void XRIEventAction::BeginOfEventAction(const G4Event*)
 void XRIEventAction::EndOfEventAction(const G4Event*)
 {   
     // accumulate statistics in run action
-    //  fRunAction->AddEdep(fEdep);
+      fRunAction->AddEdep(fEdep);
 
     // Get analysis manager instance
     G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
