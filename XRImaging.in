@@ -30,15 +30,15 @@
 ### Energy (beam) properties ##############
 
 ## Mono energy
-#/gps/ene/type Gauss
-#/gps/ene/mono 65.0 keV
-#/gps/ene/sigma 0.2 keV
+/gps/ene/type Gauss
+/gps/ene/mono 65.0 keV
+/gps/ene/sigma 0.2 keV
 
 ## Poly energy
-/gps/ene/type Arb
-/gps/hist/type arb
-/control/execute Energy.hist
-/gps/hist/inter Lin
+#/gps/ene/type Arb
+#/gps/hist/type arb
+#/control/execute Energy.hist
+#/gps/hist/inter Lin
 
 ### Angular (beam) properties ##############
 
@@ -54,4 +54,4 @@
 ##########################################
 
 /run/printProgress 1000000
-#/run/beamOn 10000000
+/run/beamOn 10000000

@@ -50,7 +50,7 @@ public:
     virtual void UserSteppingAction(const G4Step*);
 
 private:
-    //    XRIEventAction*  fEventAction;
+        XRIEventAction*  fEventAction;
     //    G4LogicalVolume* fScoringVolume;
 };
 

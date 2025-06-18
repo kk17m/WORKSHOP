@@ -40,8 +40,8 @@
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 XRISteppingAction::XRISteppingAction(XRIEventAction* eventAction)
-    : G4UserSteppingAction()
-    //      fEventAction(eventAction),
+    : G4UserSteppingAction(),
+    fEventAction(eventAction)
     //      fScoringVolume(0)
 {}
 
@@ -105,11 +105,11 @@ void XRISteppingAction::UserSteppingAction(const G4Step* step)
         analysisManager->FillH1(1, ekin);
     }
 
-    //    if (preStepVol == "fluorescenceDet")
-    //    {
-    //        const G4double eDep = step->GetTotalEnergyDeposit();
-    //        fEventAction->AddEdepFluo(eDep);
-    //    }
+    if (preStepVol == "fluorescenceDet")
+    {
+        const G4double eDep = step->GetTotalEnergyDeposit();
+        fEventAction->AddEdepFluo(eDep);
+    }
 
     //
     // transmission detector

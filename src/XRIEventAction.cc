@@ -40,9 +40,9 @@
 
 XRIEventAction::XRIEventAction(XRIRunAction* runAction)
     : G4UserEventAction(),
-      fRunAction(runAction)
-    //      fEdep(0.),
-    //      fEdepFluo(0.)
+      fRunAction(runAction),
+      //      fEdep(0.),
+      fEdepFluo(0.)
 {}
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -55,7 +55,7 @@ XRIEventAction::~XRIEventAction()
 void XRIEventAction::BeginOfEventAction(const G4Event*)
 {    
     //    fEdep = 0.;
-    //    fEdepFluo = 0.;
+    fEdepFluo = 0.;
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -66,10 +66,11 @@ void XRIEventAction::EndOfEventAction(const G4Event*)
     //  fRunAction->AddEdep(fEdep);
 
     // Get analysis manager instance
-    //    G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
+    G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
 
     // Fill the histogram with the energy deposited (via charge collection) in fluorescence detector
-    //    if (fEdepFluo > 0.)
+    if (fEdepFluo > 0.)
+        analysisManager->FillH1(2, fEdepFluo);
     //        analysisManager->FillH1(2, AddNoise(fEdepFluo));
 }
 

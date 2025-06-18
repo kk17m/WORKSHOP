@@ -49,13 +49,13 @@ public:
     virtual void EndOfEventAction(const G4Event* event);
 
     //    void AddEdep(G4double edep) { fEdep += edep; }
-    //    void AddEdepFluo(G4double edep) { fEdepFluo += edep; }
+    void AddEdepFluo(G4double edep) { fEdepFluo += edep; }
     //    G4double AddNoise(G4double energy) const;
 
 private:
     XRIRunAction* fRunAction;
     //    G4double fEdep;
-    //    G4double fEdepFluo;
+    G4double fEdepFluo;
 };
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
